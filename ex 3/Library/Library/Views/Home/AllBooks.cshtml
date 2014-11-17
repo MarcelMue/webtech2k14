@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Library.Models.Books>
+@{
+    ViewBag.Title = "All Books";
+}
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<table>
+<tr>
+    <th>
+        ISBN
+    </th>
+    <th>
+        Title
+    </th>
+    <th>
+        Author
+    </th>
+    <th>
+        Category
+    </th>
+    <th></th>
+</tr>
+@foreach (var book in Model)
+{
+ <tr>
+    <td>
+        @book.ISBN
+    </td>
+    <td>
+        @book.Title
+    </td>
+    <td>
+        @book.Author
+    </td>
+    <td>
+        @book.Category
+    </td>
+   </tr> 
+}
+</table>
+@{
+    Library.Models.Books test = new Library.Models.Books();
+    @Html.Partial("_AddBookPartial",test)
+}

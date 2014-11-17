@@ -32,7 +32,6 @@ namespace Library.Models
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
-
         public string ExternalLoginData { get; set; }
     }
 
@@ -88,10 +87,4 @@ namespace Library.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class ExternalLogin
-    {
-        public string Provider { get; set; }
-        public string ProviderDisplayName { get; set; }
-        public string ProviderUserId { get; set; }
-    }
 }
