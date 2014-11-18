@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Library.Models.RentBooksModel
+@{
     ViewBag.Title = "Rent a book";
 }
 
@@ -6,3 +7,69 @@
     <h1>@ViewBag.Title.</h1>
     <h2>@ViewBag.Message</h2>
 </hgroup>
+
+<h2>Rent some books!</h2>
+<table>
+<tr>
+    <th>
+        ISBN
+    </th>
+    <th>
+        Title
+    </th>
+    <th>
+        Author
+    </th>
+    <th>
+        Category
+    </th>
+    <th>
+        Rented
+    </th>
+    <th></th>
+</tr>
+@foreach (var book in Model.AllBooks)
+{
+ using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()  
+         <tr>
+            <td>
+                @book.ISBN
+                @Html.HiddenFor(m => m.NewRented.ISBN, new { Value = book.ISBN })
+            </td>
+            <td>
+                @book.Title
+                @Html.HiddenFor(m=> m.NewRented.Title, new { Value = book.Title })
+            </td>
+            <td>
+                @book.Author
+                @Html.HiddenFor(m=> m.NewRented.Author, new { Value = book.Author })
+            </td>
+            <td>
+                @book.Category
+                @Html.HiddenFor(m=> m.NewRented.Category, new { Value = book.Category })
+                @Html.HiddenFor(m=> m.NewRented.BookKey, new { Value = book.BookKey })
+            </td>
+             <td>
+                 @{
+                        bool rent = true;
+                        foreach(var rented in Model.AllRented){
+                            if(rented.Book.BookKey == book.BookKey){
+                             <p>Not available!</p>
+                            rent = false;
+                        }
+                        }
+                        if(rent){
+                            <input type="submit" value="Rent" />
+                        }
+                 }
+             </td>
+           </tr>
+ }
+}
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

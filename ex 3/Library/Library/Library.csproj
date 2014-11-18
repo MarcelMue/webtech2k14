@@ -168,7 +168,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\LibraryModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -281,10 +280,10 @@
     <Content Include="Views\Home\AllBooks.cshtml" />
     <Content Include="Views\Home\RentBooks.cshtml" />
     <Content Include="Views\Home\ReturnBooks.cshtml" />
-    <Content Include="Views\Home\_AddBookPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

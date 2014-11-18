@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Library.Models.ReturnBooksModel
+@{
     ViewBag.Title = "Return a book";
 }
 
@@ -6,3 +7,57 @@
     <h1>@ViewBag.Title.</h1>
     <h2>@ViewBag.Message</h2>
 </hgroup>
+
+<h2>Return some books!</h2>
+<table>
+<tr>
+    <th>
+        ISBN
+    </th>
+    <th>
+        Title
+    </th>
+    <th>
+        Author
+    </th>
+    <th>
+        Category
+    </th>
+    <th>
+        Rented
+    </th>
+    <th></th>
+</tr>
+@foreach (var rented in Model.AllRented)
+{
+    if(rented.UserProfile.UserName == User.Identity.Name){
+         using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()  
+                 <tr>
+                    <td>
+                        @rented.Book.ISBN
+                    </td>
+                    <td>
+                        @rented.Book.Title
+                    </td>
+                    <td>
+                        @rented.Book.Author
+                    </td>
+                    <td>
+                        @rented.Book.Category
+                        @Html.HiddenFor(m=> m.NewReturned.BookKey, new { Value = rented.Book.BookKey })
+                        @Html.HiddenFor(m=> m.NewReturned.UserId, new { Value = User.Identity.Name })
+                    </td>
+                     <td>
+                        <input type="submit" value="Return" />
+                     </td>
+                   </tr>
+         }
+ }
+}
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
