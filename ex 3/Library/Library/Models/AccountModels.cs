@@ -17,6 +17,7 @@ namespace Library.Models
         public DbSet<Books> Books { get; set; }
         public DbSet<Rented> Rented { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<History> History { get; set; }
     }
 
     [Table("Books")]
@@ -49,6 +50,23 @@ namespace Library.Models
         public virtual Books Book { get; set; }
     }
 
+    [Table("History")]
+    public class History
+    {
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int HistoryId { get; set; }
+        public States State { get; set; }
+        public DateTime Date { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual Books Book { get; set; }
+    }
+
+    public class HistoryModel
+    {
+        public IEnumerable<History> History { get; set; }
+    }
+
     public class AllBooksModel
     {
         public IEnumerable<Books> AllBooks { get; set; }
@@ -72,6 +90,12 @@ namespace Library.Models
     {
         public int UserId { get; set; }
         public int BookKey { get; set; }
+    }
+
+    public enum States
+    {
+        Rented =1,
+        Returned = 2
     }
 
     public enum Categories

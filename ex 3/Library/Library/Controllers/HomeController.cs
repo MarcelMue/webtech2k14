@@ -16,7 +16,6 @@ namespace Library.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View();
         }
@@ -85,6 +84,7 @@ namespace Library.Controllers
                     comp.returned = false;
                 }
                 d.SaveChanges();
+                addHistory(NewRented.UserProfile, NewRented.Book, (States)1);
             }
             return RentBooks();
         }
@@ -114,7 +114,34 @@ namespace Library.Controllers
                     .FirstOrDefault();
                 r.returned = true;
                 d.SaveChanges();
+                addHistory(r.UserProfile, r.Book, (States)2);
                 return ReturnBooks();
+            }
+        }
+
+        public void addHistory(UserProfile user, Books Book,States State)
+        {
+            using (var d = new UserContext())
+            {
+                History His = new History();
+                His.UserProfile = d.UserProfiles.Find(user.UserId);
+                His.Book = d.Books.Find(Book.BookKey);
+                His.State = State;
+                His.Date = DateTime.Now;
+                d.History.Add(His);
+                d.SaveChanges();
+            }
+        }
+
+        public ActionResult History()
+        {
+            List<History> his = null;
+            using (var d = new UserContext())
+            {
+                his = d.History.Include("Book").Include("UserProfile").AsEnumerable().ToList();
+                HistoryModel model = new HistoryModel();
+                model.History = his;
+                return View(model);
             }
         }
 

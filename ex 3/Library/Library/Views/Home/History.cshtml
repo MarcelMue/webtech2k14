@@ -1,0 +1,61 @@
+﻿@model Library.Models.HistoryModel
+@{
+    ViewBag.Title = "Your renting history";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+    
+    <table>
+<tr>
+    <th>
+        ISBN
+    </th>
+    <th>
+        Title
+    </th>
+    <th>
+        Author
+    </th>
+    <th>
+        Category
+    </th>
+    <th>
+        Status
+    </th>
+    <th>
+        Date
+    </th>
+</tr>
+@foreach (var his in Model.History)
+{
+ using (Html.BeginForm()) {
+    if(his.UserProfile.UserName == User.Identity.Name){
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()  
+             <tr>
+                <td>
+                    @his.Book.ISBN
+                </td>
+                <td>
+                    @his.Book.Title
+                </td>
+                <td>
+                    @his.Book.Author
+                </td>
+                <td>
+                    @his.Book.Category
+                </td>
+                 <td>
+                    @his.State.ToString()
+                 </td>
+                 <td>
+                     @his.Date.ToString("dd-MM-yy HH:mm")
+                 </td>
+               </tr>
+         }
+     }
+}
+</table>
