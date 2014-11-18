@@ -8,7 +8,6 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-<h2>Return some books!</h2>
 <table>
 <tr>
     <th>
@@ -30,8 +29,8 @@
 </tr>
 @foreach (var rented in Model.AllRented)
 {
-    if(rented.UserProfile.UserName == User.Identity.Name){
          using (Html.BeginForm()) {
+         if(rented.UserProfile.UserName == User.Identity.Name && rented.returned != true){
             @Html.AntiForgeryToken()
             @Html.ValidationSummary()  
                  <tr>
@@ -47,7 +46,7 @@
                     <td>
                         @rented.Book.Category
                         @Html.HiddenFor(m=> m.NewReturned.BookKey, new { Value = rented.Book.BookKey })
-                        @Html.HiddenFor(m=> m.NewReturned.UserId, new { Value = User.Identity.Name })
+                        @Html.HiddenFor(m=> m.NewReturned.UserId, new { Value = rented.UserProfile.UserId })
                     </td>
                      <td>
                         <input type="submit" value="Return" />

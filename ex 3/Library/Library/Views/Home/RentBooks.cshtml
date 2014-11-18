@@ -55,7 +55,7 @@
                  @{
                         bool rent = true;
                         foreach(var rented in Model.AllRented){
-                            if(rented.Book.BookKey == book.BookKey){
+                            if(rented.Book.BookKey == book.BookKey && rented.returned != true){
                              <p>Not available!</p>
                             rent = false;
                         }

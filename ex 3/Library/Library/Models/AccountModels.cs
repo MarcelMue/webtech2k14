@@ -45,7 +45,7 @@ namespace Library.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int RentKey { get; set; }
         public bool returned { get; set; }
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual UserProfile UserProfile { get;set; }
         public virtual Books Book { get; set; }
     }
 
@@ -65,7 +65,6 @@ namespace Library.Models
     public class ReturnBooksModel
     {
         public IEnumerable<Rented> AllRented { get; set; }
-        public IEnumerable<Books> AllBooks { get; set; }
         public ReturnModel NewReturned { get; set; }
     }
 
@@ -100,6 +99,7 @@ namespace Library.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [EmailAddress]
         public string UserName { get; set; }
         public string ExternalLoginData { get; set; }
     }
@@ -126,6 +126,7 @@ namespace Library.Models
     public class LoginModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
@@ -142,6 +143,7 @@ namespace Library.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [EmailAddress]
         public string UserName { get; set; }
 
         [Required]

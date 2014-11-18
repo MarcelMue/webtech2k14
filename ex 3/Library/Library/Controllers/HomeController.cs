@@ -21,7 +21,6 @@ namespace Library.Controllers
             return View();
         }
 
-
         public ActionResult AllBooks()
         {
             ViewBag.Message = "Here are all books listed, you can add any books with a valid ISBN.";
@@ -72,24 +71,36 @@ namespace Library.Controllers
             {
                 NewRented.UserProfile = d.UserProfiles.Find((int)WebSecurity.CurrentUserId);
                 NewRented.Book = d.Books.Find(model.NewRented.BookKey);
-                NewRented.returned = false;
-                d.Rented.Add(NewRented);
+                NewRented.returned = true;
+                Rented comp = d.Rented.Where(x => x.UserProfile.UserId == (int)WebSecurity.CurrentUserId)
+                    .Where(x => x.Book.BookKey == model.NewRented.BookKey)
+                    .FirstOrDefault();
+                if (comp == null)
+                {
+                    NewRented.returned = false;
+                    d.Rented.Add(NewRented);
+                }
+                else
+                {
+                    comp.returned = false;
+                }
                 d.SaveChanges();
             }
             return RentBooks();
         }
-
+        
         public ActionResult ReturnBooks()
         {
+            List<Rented> rented = null;
             using (var d = new UserContext())
             {
-                IEnumerable<Rented> test = d.Rented.AsEnumerable().ToList();
-                ReturnBooksModel ReturnModel = new ReturnBooksModel();
-                ReturnModel.AllRented = test;
-                ReturnModel.AllBooks = d.Books.AsEnumerable().ToList();
-                ReturnModel.NewReturned = new ReturnModel();
-                return View(ReturnModel);
+                rented = d.Rented.Include("Book").Include("UserProfile").AsEnumerable().ToList();
+                ReturnBooksModel model = new ReturnBooksModel();
+                model.AllRented = rented;
+                model.NewReturned = new ReturnModel();
+                return View(model);
             }
+            
         }
 
         [HttpPost]
@@ -98,7 +109,10 @@ namespace Library.Controllers
         {
             using (var d = new UserContext())
             {
-                d.Rented.Where(x => x.UserProfile.UserId == model.NewReturned.UserId).Where(x => x.Book.BookKey == model.NewReturned.BookKey).FirstOrDefault().returned = true;
+                Rented r = d.Rented.Where(x => x.UserProfile.UserId == model.NewReturned.UserId)
+                    .Where(x => x.Book.BookKey == model.NewReturned.BookKey)
+                    .FirstOrDefault();
+                r.returned = true;
                 d.SaveChanges();
                 return ReturnBooks();
             }
