@@ -8,6 +8,7 @@ using System.Web.Security;
 
 namespace Library.Models
 {
+    //Database context
     public class UserContext : DbContext
     {
         public UserContext()
@@ -20,6 +21,7 @@ namespace Library.Models
         public DbSet<History> History { get; set; }
     }
 
+    //Layout of the Books Table
     [Table("Books")]
     public class Books
     {
@@ -39,6 +41,8 @@ namespace Library.Models
         [Display(Name="Category")]
         public Categories Category { get; set; }
     }
+
+    //Layout of the Rented Table
     [Table("Rented")]
     public class Rented
     {
@@ -50,6 +54,7 @@ namespace Library.Models
         public virtual Books Book { get; set; }
     }
 
+    //Layout of the History Table
     [Table("History")]
     public class History
     {
@@ -62,6 +67,7 @@ namespace Library.Models
         public virtual Books Book { get; set; }
     }
 
+    //The next few classes are Models which are used to carry data to views
     public class HistoryModel
     {
         public IEnumerable<History> History { get; set; }
@@ -92,6 +98,7 @@ namespace Library.Models
         public int BookKey { get; set; }
     }
 
+    //Enums to make the code prettier
     public enum States
     {
         Rented =1,
@@ -110,6 +117,7 @@ namespace Library.Models
         Educational
     }
 
+    //User related Table & following Models
     [Table("UserProfile")]
     public class UserProfile
     {

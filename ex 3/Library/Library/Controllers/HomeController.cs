@@ -13,6 +13,7 @@ namespace Library.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        //Index Page
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -20,6 +21,7 @@ namespace Library.Controllers
             return View();
         }
 
+        //All books page calles to Render
         public ActionResult AllBooks()
         {
             ViewBag.Message = "Here are all books listed, you can add any books with a valid ISBN.";
@@ -33,6 +35,7 @@ namespace Library.Controllers
             }
 
         }
+        //All books page called when a form is sent
         [HttpPost]
         public ActionResult AllBooks(AllBooksModel model)
         {
@@ -46,6 +49,7 @@ namespace Library.Controllers
             return AllBooks();
         }
 
+        // Rent page called to render
         public ActionResult RentBooks()
         {
             List<Rented> rented = null;
@@ -61,6 +65,7 @@ namespace Library.Controllers
             }
         }
 
+        //Rent page called when a form is sent
         [HttpPost]
         [InitializeSimpleMembership]
         public ActionResult RentBooks(RentBooksModel model)
@@ -89,6 +94,7 @@ namespace Library.Controllers
             return RentBooks();
         }
         
+        //Return books page called to Render
         public ActionResult ReturnBooks()
         {
             List<Rented> rented = null;
@@ -103,6 +109,7 @@ namespace Library.Controllers
             
         }
 
+        //Return Books page called when a Form is sent
         [HttpPost]
         [InitializeSimpleMembership]
         public ActionResult ReturnBooks(ReturnBooksModel model)
@@ -119,6 +126,7 @@ namespace Library.Controllers
             }
         }
 
+        //Helper to persist user History
         public void addHistory(UserProfile user, Books Book,States State)
         {
             using (var d = new UserContext())
@@ -133,6 +141,7 @@ namespace Library.Controllers
             }
         }
 
+        //page that renders user history
         public ActionResult History()
         {
             List<History> his = null;
