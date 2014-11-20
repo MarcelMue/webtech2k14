@@ -1,0 +1,44 @@
+.cinemaList{
+	width:300px;
+	position: absolute;
+	margin-left: 500px;
+	margin-top: -420px;
+}
+.cinema{
+	margin: 20px 20px 20px 20px;
+	text-align: center;
+	background-color: #EEE;
+	border:solid grey 1px;
+	font: 16px sans-serif;
+	cursor:pointer;
+}
+
+h2{
+	font:20px sans-serif;
+	margin-left: 40px;
+}
+
+.selected{
+	background-color: #C0C9C0;
+}
+
+#seating{
+	position:relative;
+	border:solid grey 1px;
+}
+.billing{
+	margin-left: 40px;
+	margin-top: 50px;
+}
+.formfield{
+	margin:0px 20px 20px 0px;
+}
+canvas{
+	width:400px;
+	height:400px;
+	margin-left: 40px;
+	margin-top: 40px;
+}
+nav{
+	margin-left: 40px;
+}

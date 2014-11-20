@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>
+			Webtech
+		</title>
+		<link rel="stylesheet" type="text/css" href="kino.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+	</head>
+	<body>
+		<h2>
+			The Grand WebTech Cinema
+		</h2>
+		<nav class="navigation">
+			<a href="#seating">Choose a seat</a>
+			<a href="#billing">Confirm your reservation</a>
+		</nav>
+		<main>
+			<a name="seating"></a>
+			<canvas id="seating">
+			</canvas>
+			<div class="cinemaList">
+			</div>
+			<div class="billing">
+				<a name="billing"></a>
+				<form  autocomplete="on">
+					<div class="formfield" id="info">
+
+					</div>
+					<div class="formfield">
+						First name:<input type="text"><br>
+					</div>
+					<div class="formfield">
+					Last name: <input type="text"><br>
+					</div>
+					<div class="formfield">
+					E-mail: <input type="email" name="email" autocomplete="off"><br>
+					</div>
+					<div class="formfield">
+					This website has the greatest design ever seen <input type="checkbox" ><br>
+					</div>
+					<div class="formfield">
+					<input type="submit" value="dont press this button!">
+				</div>
+				</form>
+			</div>
+		</main>
+		<footer>
+		</footer>
+		<div id="hiddenmap">
+		</div>
+		<script type="text/javascript" src="kino.js"></script>
+	</body>
+</html>
