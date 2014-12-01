@@ -20,31 +20,6 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class API extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet API</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet API at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -58,7 +33,24 @@ public class API extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+    PrintWriter out = response.getWriter();
+ 
+    int[] seats = new int[2];
+    seats[0] = 123;
+    seats[1] = 21;
+    ObjectMapper mapper = new ObjectMapper();
+ 
+    try {
+      // display to console
+      out.println(mapper.writeValueAsString(seats));
+    } catch (JsonGenerationException e) {
+      e.printStackTrace();
+    } catch (JsonMappingException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    out.close();
     }
 
     /**
@@ -80,7 +72,9 @@ public class API extends HttpServlet {
     try {
       // read from file, convert it to user class
       Reservation res = mapper.readValue(request.getReader(), Reservation.class);
-      // display to console
+      //put into DB
+      //get id from database
+      //return to user
       out.println(res.getSeats()[0]);
     } catch (JsonGenerationException e) {
       e.printStackTrace();
