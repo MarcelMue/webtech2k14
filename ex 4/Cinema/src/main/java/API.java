@@ -6,6 +6,9 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +22,14 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author Marcel
  */
 public class API extends HttpServlet {
+
+    
+    String url = "jdbc:mysql://localhost:3306/";
+    String dbName = "cinema";
+    String driver = "com.mysql.jdbc.Driver";
+    String userName = "root"; 
+    String password = "start";
+
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,6 +83,11 @@ public class API extends HttpServlet {
     try {
       // read from file, convert it to user class
       Reservation res = mapper.readValue(request.getReader(), Reservation.class);
+      Class.forName(driver).newInstance();
+      Connection conn = DriverManager.getConnection(url+dbName,userName,password);  
+      Statement st = conn.createStatement();
+      st.executeQuery("INSERT INTO cinema.movies VALUES (NULL,"+res.getMovie()+")");
+      conn.close();
       //put into DB
       //get id from database
       //return to user
@@ -83,6 +99,8 @@ public class API extends HttpServlet {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+    } catch (Exception e){
+        e.printStackTrace();
     }
     out.close();
     }
