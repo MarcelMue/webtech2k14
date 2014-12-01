@@ -86,7 +86,7 @@ public class API extends HttpServlet {
       Class.forName(driver).newInstance();
       Connection conn = DriverManager.getConnection(url+dbName,userName,password);  
       Statement st = conn.createStatement();
-      st.executeQuery("INSERT INTO cinema.movies VALUES (NULL,"+res.getMovie()+")");
+      st.executeUpdate("INSERT INTO cinema.movies VALUES (NULL,'"+res.getMovie()+"')");
       conn.close();
       //put into DB
       //get id from database
@@ -100,7 +100,7 @@ public class API extends HttpServlet {
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e){
-        e.printStackTrace();
+        out.println(e.toString());
     }
     out.close();
     }
