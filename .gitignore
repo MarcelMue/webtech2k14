@@ -194,7 +194,8 @@ FakesAssemblies/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -228,3 +229,13 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+/ex 4/CinemaJEE/nbproject/private/
+/ex 4/CinemaJEE/CinemaJEE-war/nbproject/private/
+/ex 4/CinemaJEE/CinemaJEE-ejb/nbproject/private/
+/ex 4/Cinema/nbproject/private/
+/ex 4/Cinema/dist/
+/ex 4/Cinema/target/
+/ex 4/Cinema/Cinema-ejb/target/
+/ex 4/Cinema/Cinema-web/target/
+/ex 4/Cinema/Cinema-ear/target/
+/ex 4/mavenproject1/Cinema/target/
