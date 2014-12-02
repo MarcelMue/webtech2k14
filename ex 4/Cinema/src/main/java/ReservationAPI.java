@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Random;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -15,9 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.util.JSONPObject;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,10 +23,11 @@ import org.codehaus.jackson.map.util.JSONPObject;
 
 /**
  *
- * @author Roftimao
+ * @author Team Yellow
  */
 public class ReservationAPI extends HttpServlet {
     String url = "jdbc:mysql://localhost:3306/";
+    //TODO: input your root mysql username, password and change the dbName accordingly 
     String dbName = "test";
     String driver = "com.mysql.jdbc.Driver";
     String userName = "root"; 
@@ -54,24 +51,32 @@ public class ReservationAPI extends HttpServlet {
         JsonObject ReservationObj=jsonReader.readObject();
         jsonReader.close();
     try {   
+        //open the Database Connection
         Class.forName(driver).newInstance();
         Connection conn = DriverManager.getConnection(url+dbName,userName,password);  
+        //insert the reservation data of the json into the database 
+        //the posted json has the form :  {"name": "Philipp", "email": "TEst@asdasd", "cinemovie_id": 7, "seats" : [1,2,3,5] }
         Statement updateStatement = conn.createStatement();
-        
         updateStatement.executeUpdate("INSERT INTO reservations VALUES(NULL,'"
                                     + ReservationObj.getString("name")+"','"
                                     + ReservationObj.getString("email")+"',"
-                                    + ReservationObj.getInt("cinemovie_id")+")");
-        out.println("test");
+                                    + ReservationObj.getString("cinemovie_id")+")");
+        //get the seats array of the json
         JsonArray seats=ReservationObj.getJsonArray("seats");
         int k=0;
+        //insert the reservated seats
         while(k<seats.size()){
             updateStatement.executeUpdate("INSERT INTO cinemovies_seats VALUES("
-                    +ReservationObj.getInt("cinemovie_id")+","
+                    +ReservationObj.getString("cinemovie_id")+","
                     +seats.getInt(k)+",LAST_INSERT_ID())");
             k++;
-        }
-  
+        }   
+        Statement queryStatement = conn.createStatement();
+        ResultSet reservationID=queryStatement.executeQuery("SELECT LAST_INSERT_ID() as id");
+        reservationID.next();
+        
+        out.println("{\"id\": "+reservationID.getInt("id")+"}");
+        conn.close();
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     } catch (InstantiationException e) {

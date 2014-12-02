@@ -24,10 +24,11 @@ import org.codehaus.jackson.map.JsonMappingException;
 
 /**
  *
- * @author Roftimao
+ * @author Team Yellow
  */
 public class CinemaMovieAPI extends HttpServlet {
     String url = "jdbc:mysql://localhost:3306/";
+    //TODO: input your root mysql username, password and change the dbName accordingly 
     String dbName = "test";
     String driver = "com.mysql.jdbc.Driver";
     String userName = "root"; 
@@ -47,18 +48,24 @@ public class CinemaMovieAPI extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        
         PrintWriter out = response.getWriter();
-        String requestedCinema= request.getQueryString();
+        //decode URL (example Cine%20Karree%20GmbH%20&%20Co.%20KG  => Cine Karree GmbH & Co. KG)
+        String requestedCinema= java.net.URLDecoder.decode(request.getQueryString(), "UTF-8");
+        
         try {
+            
             Class.forName(driver).newInstance();
+            //open the Database Connection
             Connection conn = DriverManager.getConnection(url+dbName,userName,password);  
+            //SQL Query that gets the Table containing cinemovie_id and a concatenated String of the seats to the corresponding movies
             Statement queryStatement = conn.createStatement();
             ResultSet seatsPerShow = queryStatement.executeQuery("SELECT cm.id, m.name,GROUP_CONCAT(cs.seat) as seats FROM cinemas_movies as cm "
                                                         +" LEFT join movies as m on m.id=cm.movie_id  "
                                                         +" LEFT join cinemovies_seats as cs on cm.id=cs.cinemovie_id "
                                                         +" WHERE cinema='"+ requestedCinema+"' GROUP by cm.id");
             
-           
+           //build the JSON answere of the form: [{"name": "Mueller","cinemovie_id": 2,"seats":[1,4,5,7]},...]
             String result="[";
             while(seatsPerShow.next()){
                 result+="{\"name\": "+"\""+seatsPerShow.getString("name")+"\", ";
@@ -66,7 +73,7 @@ public class CinemaMovieAPI extends HttpServlet {
                 if(seatsPerShow.getString("seats")!=null){
                      result+="\"seats\": ["+seatsPerShow.getString("seats")+"]}";
                 }else{
-                     result+="\"seats\": [0]}";
+                     result+="\"seats\": []}";
                 }
                 if(!seatsPerShow.isLast()){
                     result+=" , ";
@@ -74,9 +81,11 @@ public class CinemaMovieAPI extends HttpServlet {
                     result+=" ] ";
                 }
             }
+            //set response type and flush output
             response.setContentType("application/json");
             out.print(result);
             out.flush();
+            conn.close();
         } catch (Exception e){
               out.println(e.toString());
         }
@@ -96,7 +105,7 @@ public class CinemaMovieAPI extends HttpServlet {
     PrintWriter out = response.getWriter();
     
    try {
-    
+        //read the json of the post it has the form: ["cinemaName1","cinemaName3","cinemaName3","cinemaName4"]
         JsonReader jsonReader=Json.createReader(request.getReader());
         JsonArray cinemaArray=jsonReader.readArray();
         jsonReader.close();
@@ -106,9 +115,14 @@ public class CinemaMovieAPI extends HttpServlet {
         Connection conn = DriverManager.getConnection(url+dbName,userName,password);  
         Statement updateStatement = conn.createStatement();
         Statement queryStatement = conn.createStatement();
+        
+        //delete all data in the tables when new cinemas are posted
         updateStatement.executeUpdate("TRUNCATE TABLE cinemas_movies");
         updateStatement.executeUpdate("TRUNCATE TABLE cinemovies_seats");
         updateStatement.executeUpdate("TRUNCATE TABLE reservations");
+        
+        //generates some random connections between the posted cinemas
+        //and hard coded movies inserted by the sql-dump
         ResultSet knownMovies = queryStatement.executeQuery("SELECT id, name FROM movies");
         Random random = new Random();
         int randomNumber; 
