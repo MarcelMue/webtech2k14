@@ -125,8 +125,6 @@ $mysqli->autocommit(TRUE);
 
 $mysqli->close();
 
-
-
 function errorHandling($header, $message) {
   header('HTTP/1.0 '.$header);
   $error['message'] = 'Ain\'t no sunshine when '.$message;
