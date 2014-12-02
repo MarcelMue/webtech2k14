@@ -1,5 +1,5 @@
 /*jslint browser: true */
-/*global google*/
+/*global google, alert, jQuery*/
 var hall;     // Cinema hall
 var hallctx;  // Canvas hall
 var relSeatCoor = [];   // Relation between seat id and position
@@ -13,6 +13,7 @@ function clearForm() {
   $('input[name=cinemovie_id]').val('');
   relSeatCoor = [];
   $('#selected_seats').empty();
+  resSeats = [];
 }
 
 // Click Event on seat
@@ -98,6 +99,7 @@ function appendMovie(movie) {
     e.preventDefault();
     clearForm();
     $('input[name=cinemovie_id]').val(movie.cinemovie_id);
+    console.log(movie.seats);
     drawHall(movie.seats);
   });
 
@@ -106,7 +108,7 @@ function appendMovie(movie) {
 
 function loadMovies(cinema) {
   globCinema = cinema;
-  var url = 'http://test.dev/cinema.php?action=getMovies&cinema=' + cinema;
+  var url = 'cinema.php?action=getMovies&cinema=' + cinema;
   $.getJSON(url, function (data) {
     $.each(data, function (i, item) {
       appendMovie(item);
@@ -139,20 +141,12 @@ function handlePlacesResponse(results, status) {
     });
 
     // Seed: Cinema and movies
-    $.post('http://test.dev/cinema.php?action=seedCinema',
-      JSON.stringify(cinemaList),
-      function (data) {
-        // Append Cinema after successfully seeeeeed
-        for (i = 0; i < results.length; i++) {
-          appendCinema(results[i]);
-        }
+    $.post('cinema.php?action=seedCinema',
+      JSON.stringify(cinemaList));
 
-      }, 'json')
-      .fail(function (jqXHR) {
-        var error = JSON.parse(jqXHR.responseText);
-        alert(error.message);
-      });
-
+    for (i = 0; i < results.length; i++) {
+      appendCinema(results[i]);
+    }
   } else {
     $("#cinemaList").append('<li>Nothing</li>');
   }
@@ -226,7 +220,7 @@ $(function () {
       seats: resSeats
     };
 
-    $.post('http://test.dev/cinema.php',
+    $.post('cinema.php',
       JSON.stringify(request),
       function (data) {
         alert('Your reservation id: ' + data.id);

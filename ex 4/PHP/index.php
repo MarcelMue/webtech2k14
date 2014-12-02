@@ -4,7 +4,7 @@
   <title>CineYellow</title>
   <meta charset="UTF-8">
   <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="stylesheets/app.css"></link>
+  <link rel="stylesheet" type="text/css" href="stylesheets/app.css">
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
@@ -16,8 +16,8 @@
   </header>
   <nav>
     <ul>
-      <li><a href="#">Choose a seat</a></li>
-      <li><a href="#">Confirm your reservation</a></li>
+      <li><a href="http://www.google.com">Google</a></li>
+      <li><a href="http://www.rwth-aachen.de">RWTH</a></li>
     </ul>
   </nav>
   <main role="main">
