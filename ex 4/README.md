@@ -16,6 +16,6 @@
 ##Setup
   1. Import cinema.sql
   2. Replace db credentials (e.g. change username,password und database name in CinemaMovieAPI and ReservationAPI and if the port of the site is not 8080 change the urls in Cinema\src\main\webapp\app.js line:111, 144 ,223) 
-  3.Internet access is needed (e.g. Google Places)
+  3. Internet access is needed (e.g. Google Places)
   4. Build & run Project
   5. Have fun!
